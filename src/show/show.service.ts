@@ -1,26 +1,57 @@
-import { Injectable } from '@nestjs/common';
+import _ from 'lodash';
+import { parse } from 'papaparse';
+import { Repository } from 'typeorm';
+
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+
 import { CreateShowDto } from './dto/create-show.dto';
 import { UpdateShowDto } from './dto/update-show.dto';
+import { Show } from './entities/show.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ShowService {
-  create(createShowDto: CreateShowDto) {
-    return 'This action adds a new show';
+  constructor(
+    @InjectRepository(Show)
+    private showRepository: Repository<Show>,
+  ) {}
+
+  async creatsShow(createShowDto: CreateShowDto) {
+    const newUser = await this.showRepository.save(createShowDto);
+
+    return newUser;
   }
 
-  findAll() {
-    return `This action returns all show`;
+  async findAll(): Promise<Show[]> {
+    return await this.showRepository.find({
+      select: [
+        'showName',
+        'detail',
+        'category',
+        'region',
+        'image',
+        'date',
+        'time',
+        'seat',
+        'seatPrice',
+      ],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} show`;
+  async findOne(id: number) {
+    return await this.verifyTeamById(id);
   }
 
-  update(id: number, updateShowDto: UpdateShowDto) {
-    return `This action updates a #${id} show`;
-  }
+  private async verifyTeamById(id: number) {
+    const show = await this.showRepository.findOneBy({ id });
+    if (_.isNil(show)) {
+      throw new NotFoundException('존재하지 않는 공연입니다.');
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} show`;
+    return show;
   }
 }
