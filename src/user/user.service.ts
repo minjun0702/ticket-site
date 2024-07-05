@@ -15,6 +15,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 
 import { User } from './entities/user.entity';
 import { IsEmail } from 'class-validator';
+import { MESSAGE } from '../message';
 
 @Injectable()
 export class UserService {
@@ -34,19 +35,19 @@ export class UserService {
     const hashedPassword = await hash(createUserDto.password, 10);
 
     // 패스워드를 제외하고 사용자 정보 저장
-    const newUser = await this.userRepository.create({
+    const newUser = await this.userRepository.save({
       ...createUserDto,
       password: hashedPassword,
     });
 
-    await this.userRepository.save(newUser);
-
     //  JWT 토큰 생성
     const payload = { id: newUser.id };
-    const accessToken = await this.jwtService.signAsync(payload);
+    const accessToken = await this.jwtService.signAsync(payload, {
+      expiresIn: '1h',
+    });
 
     return {
-      message: '회원가입에 성공하였습니다.',
+      message: MESSAGE.SIGN_UP.SUCCEED,
       data: { ...newUser, password: undefined },
       accessToken,
     };
@@ -59,13 +60,13 @@ export class UserService {
       select: ['id', 'email', 'password'],
     });
 
-    if (_.isNil(user)) {
-      throw new UnauthorizedException('이메일을 확인해주세요.');
+    if (_.isNil(user) || !(await compare(password, user.password))) {
+      throw new UnauthorizedException('이메일 및 비밀번호를 확인해주세요.');
     }
 
-    if (!(await compare(password, user.password))) {
-      throw new UnauthorizedException('비밀번호를 확인해주세요.');
-    }
+    // if (!(await compare(password, user.password))) {
+    //   throw new UnauthorizedException('비밀번호를 확인해주세요.');
+    // }
 
     const payload = { email, sub: user.id };
     return {
@@ -76,5 +77,11 @@ export class UserService {
 
   async findByEmail(email: string) {
     return await this.userRepository.findOneBy({ email });
+  }
+
+  async usesPointDeduction(userid: number, seatPrice: number) {
+    const user = await this.userRepository.findOne({ where: { id: userid } });
+    user.point -= seatPrice;
+    await this.userRepository.save(user);
   }
 }

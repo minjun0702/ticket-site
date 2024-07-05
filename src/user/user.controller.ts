@@ -26,11 +26,8 @@ export class UserController {
   @Get('/me')
   async profile(@UserInfo() user: User) {
     return {
-      email: user.email,
-      name: user.name,
-      role: user.role,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
+      message: '내 정보 조회에 성공하였습니다.',
+      data: { ...user, password: undefined },
     };
   }
 }

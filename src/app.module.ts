@@ -11,6 +11,8 @@ import { ShowModule } from './show/show.module';
 import { User } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { Reservation } from './reservation/entities/reservation.entity';
+import { ReservationModule } from './reservation/reservation.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -23,7 +25,7 @@ const typeOrmModuleOptions = {
     host: configService.get('DB_HOST'),
     port: configService.get('DB_PORT'),
     database: configService.get('DB_NAME'),
-    entities: [User, Show],
+    entities: [User, Show, Reservation],
     synchronize: configService.get('DB_SYNC'),
     logging: true,
   }),

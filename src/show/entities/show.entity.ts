@@ -1,8 +1,8 @@
+import { Reservation } from 'src/reservation/entities/reservation.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  Index,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -15,7 +15,7 @@ export class Show {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', unique: true, nullable: false })
+  @Column({ type: 'varchar', nullable: false })
   showName: string;
 
   @Column({ type: 'text', nullable: false })
@@ -41,6 +41,9 @@ export class Show {
 
   @Column({ type: 'int', nullable: false })
   seatPrice: number;
+
+  @OneToMany(() => Reservation, (reservation) => reservation.show)
+  reservation: Reservation[];
 
   @CreateDateColumn()
   createdAt: Date;

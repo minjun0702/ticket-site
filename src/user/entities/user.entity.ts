@@ -10,6 +10,7 @@ import {
 
 import { Role } from '../types/userRole.type';
 import { UserPoint } from '../types/userPoint.type';
+import { Reservation } from '../../reservation/entities/reservation.entity';
 
 @Entity({
   name: 'users',
@@ -32,6 +33,9 @@ export class User {
 
   @Column({ type: 'enum', enum: UserPoint, default: UserPoint.User })
   point: UserPoint;
+
+  @OneToMany(() => Reservation, (reservation) => reservation.user)
+  reservation: Reservation[];
 
   @CreateDateColumn()
   createdAt: Date;
