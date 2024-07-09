@@ -4,34 +4,15 @@ https://www.notion.so/81b7ac6e6354421f874f19be27b889a6?pvs=4
 ##ERD
 https://drawsql.app/teams/team-3527/diagrams/ticketsite
 
-```bash
+
+```package 설치
 $ npm install
 ```
 
-## Running the app
+##서버 실행
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npn run start
 ```
 
 
