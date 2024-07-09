@@ -8,6 +8,8 @@ https://www.notion.so/81b7ac6e6354421f874f19be27b889a6?pvs=4
 https://drawsql.app/teams/team-3527/diagrams/ticketsite
 
 
+
+
 ```package 설치
 $ npm install
 ```
@@ -17,6 +19,8 @@ $ npm install
 ```bash
 npn run start
 ```
+
+
 
 
 - Twitter - [@nestframework](https://twitter.com/nestframework)
