@@ -1,7 +1,6 @@
 ## 환경변수
 + env.example 파일의 이름을 .env로 변경하고 아래 내용을 채움
 ```
-
 DB_HOST= localhost
 DB_PORT=3306
 DB_USERNAME= DB ID
@@ -14,7 +13,7 @@ JWT_SECRET_KEY= JWT 생성을 위한 비밀 키
 ## 실행 방법 (with yarn)
 +필요한 패키지 설치
 ```
-npm
+npm install
 ```
 
 +서버 실행
